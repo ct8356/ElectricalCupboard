@@ -1,0 +1,11 @@
+﻿<Application x:Class="ConnectToExcelOLEDB.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ConnectToExcelOLEDB"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ControlTemplate TargetType="Button" x:Key="EditableComboBox">
+            <ComboBox IsEditable="True"></ComboBox>
+        </ControlTemplate>
+    </Application.Resources>
+</Application>

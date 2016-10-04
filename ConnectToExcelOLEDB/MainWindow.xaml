@@ -1,0 +1,107 @@
+﻿<Window x:Class="ConnectToExcelOLEDB.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ConnectToExcelOLEDB"
+        xmlns:CJT="clr-namespace:CJT;assembly=CJT"
+        mc:Ignorable="d"
+        Width="600"
+        Title="Electrical cupboard">
+    <Window.DataContext>
+        <local:MainVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate x:Key="ComboBoxDataTemplate">
+            <ComboBox IsEditable="True" Margin="0" />
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Status}" />
+            </StatusBarItem>
+        </StatusBar>
+        
+        <TabControl DockPanel.Dock="Top" Margin="0, 0, 0, 0">
+            
+            <TabItem Name="Contents" Header="Contents">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <Label Margin ="3">Search:</Label>
+                        <TextBox Margin ="3" Width ="200" Text="{Binding SearchBar}"></TextBox>
+                        <Button Margin ="3" Width ="70" Click="SearchContents_Click">Search</Button>
+                    </StackPanel>
+                    <CJT:DataGrid Margin ="3" 
+                                  x:Name="ContentsGrid" 
+                                  AutoGenerateColumns="True"
+                                  DataContext="{Binding ContentsVM}" 
+                                  IsSourceTable="True"
+                                  IsReadOnly="True"
+                                  ItemsSource="{Binding DataTable}" 
+                                  DockPanel.Dock="Top"/>
+                    <GroupBox Margin ="3" Header="New transaction" DockPanel.Dock="Top">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Label Margin ="3">Job number:</Label>
+                                <ComboBox Name="ComboBox" Margin ="3" 
+                                          Text="{Binding NewTransactionVM.JobNumber}" IsEditable="True">
+                                </ComboBox>
+                            </StackPanel>
+                            <CJT:DataGrid Margin ="3" 
+                                          x:Name="NewTransactionGrid"
+                                          AutoGenerateColumns="True"
+                                          CanUserAddRows="False"
+                                          DataContext="{Binding NewTransactionVM}"
+                                          ItemsSource="{Binding DataTable}" 
+                                          DockPanel.Dock="Top"></CJT:DataGrid>
+                            <Button Click="CommitTransaction_Click">Commit transaction</Button>
+                        </StackPanel>
+                    </GroupBox>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Name="Transactions" Header="Transactions">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <Label Margin ="3">Search:</Label>
+                        <TextBox Margin ="3" Width ="200" 
+                                 Text="{Binding SearchBar}"></TextBox>
+                        <Button Margin ="3" Width ="70" 
+                                Click="SearchTransactions_Click">Search</Button>
+                    </StackPanel>
+                    <DataGrid x:Name="TransactionGrid" 
+                              IsReadOnly="false"
+                              AutoGenerateColumns="True"
+                              DataContext="{Binding TransactionVM}"
+                              ItemsSource="{Binding DataTable}" 
+                              DockPanel.Dock="Top"/>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Name="Settings" Header="Settings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="28" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Excel file path:"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding ExcelContext.FilePath}" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Datasource:"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="3" 
+                              SelectedItem="{Binding DbType}" 
+                              ItemsSource="{Binding DbTypeOptions}"/>
+                    <Button Grid.Row="3"  Grid.Column="1" Width="60" Content="Save" Click="Save_Click"></Button>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+        <Button Click="DoTheThing_Click">Do the thing</Button>
+    </DockPanel>
+</Window>
